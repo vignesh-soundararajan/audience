@@ -1,0 +1,4 @@
+audience-visiblity-js:
+    version: 1.x
+    js:
+      js/audience_visiblity.js: {}

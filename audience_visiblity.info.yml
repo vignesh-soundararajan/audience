@@ -1,0 +1,6 @@
+name: Audience Visiblity
+type: module
+description: 'Controls block Visiblity based on Audience'
+package: RTG
+version: 8.x-1.x
+core: 8.x

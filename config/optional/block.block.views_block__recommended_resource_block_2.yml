@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.recommended_resource
+  module:
+    - block_class
+    - system
+    - views
+  theme:
+    - rtg
+third_party_settings:
+  block_class:
+    classes: ''
+id: views_block__recommended_resource_block_2
+theme: rtg
+region: sidebar_second
+weight: 0
+provider: null
+plugin: 'views_block:recommended_resource-block_2'
+settings:
+  id: 'views_block:recommended_resource-block_2'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: '/program/*'
+    negate: false
+    context_mapping: {  }
+

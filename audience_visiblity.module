@@ -1,0 +1,77 @@
+<?php
+
+use Drupal\user\Entity\User;
+use Drupal\audience_visiblity\Audience;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\custom_rtg\app\config\Utility;
+
+function audience_visiblity_user_login($account) {
+    Utility::notify(TRUE);
+    $userIdCurrent = \Drupal::currentUser()->id();
+    $user = user_load($userIdCurrent);
+    if(empty($user->field_audience->getValue())){
+        Audience::UserUpdate($account);
+      
+    } 
+   
+}
+
+function audience_visiblity_user_presave(EntityInterface $entity) {
+ 
+}
+
+
+/**
+ *Implements hook_form_alter().
+ *block visibility condition.
+ **/
+
+ function audience_visiblity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+     
+  //  echo $form_id;
+    if($form_id == "block_form" || $form_id == "menu_edit_form" ||$form_id == "user_register_form" || $form_id =='taxonomy_overview_vocabularies' || $form_id == "node_patient_education_form
+Skip" || $form_id == "node_banners_form" || $form_id == "node_page_form" || 
+$form_id == "node_patient_education_form"  || $form_id == "node_products_form"  || $form_id == "node_therapies_form" || $form_id == "node_article_form" ) {
+            $userCurrent = \Drupal::currentUser();
+            if(!$userCurrent->hasPermission('rtg block visibility')) {                
+                $form['actions']['submit']['#submit'][] = 'custom_block_submit';
+                unset($form['settings']['label_display']);
+
+              if(isset($form['settings']['context_mapping'])){
+                 unset($form['settings']['context_mapping']); 
+               }
+                   
+                unset($form['visibility']['visibility_tabs']);
+                unset($form['visibility']['entity_bundle:group']);
+                unset($form['visibility']['entity_bundle:node']);
+                unset($form['visibility']['group_type']);
+                unset($form['visibility']['node_type']);
+                unset($form['visibility']['request_path']);
+                unset($form['visibility']['user_role']);     
+                unset($form['weight']);
+                unset($form['region']);
+                unset($form['id']);
+                unset($form['visibility']['user_audience']['negate']);
+                $form['visibility']['user_audience']['#open'] = TRUE;   
+                unset($form['actions']['delete']);
+            }
+        
+    }
+ }
+ 
+ function custom_block_submit($form, FormStateInterface $form_state) {
+    $response = new RedirectResponse("/drupal_admin/dashboard");
+    $response->send();
+ }
+ 
+ function audience_visiblity_preprocess_html(&$variables) {
+    $user = \Drupal::currentUser();
+    $user_flag = 0;
+    if(!in_array('administrator',$user->getRoles())) {
+        $user_flag = 1;
+    }
+    $variables['#attached']['library'][] = 'audience_visiblity/audience-visiblity-js';
+   $variables['#attached']['drupalSettings']['audience_visiblity']['user_flag'] = $user_flag;
+ }

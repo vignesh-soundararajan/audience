@@ -1,0 +1,23 @@
+uuid: 48c9c879-cba8-43ea-be94-48b4df817d97
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_category_id
+    - taxonomy.vocabulary.category
+id: taxonomy_term.category.field_category_id
+field_name: field_category_id
+entity_type: taxonomy_term
+bundle: category
+label: 'Category Id'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
